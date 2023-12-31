@@ -1,5 +1,7 @@
-import { Schema, model } from "mongoose";
-import IUser from "./user.interface";
+import { Model, Schema, model } from "mongoose";
+import IUser, { UserModel } from "./user.interface";
+
+// type UserModle = Model<IUser, {}, IUserMethods>
 
 const userSchema = new Schema<IUser>({
     id: {
@@ -49,5 +51,15 @@ const userSchema = new Schema<IUser>({
     }
 })
 
-const User = model<IUser>('Users', userSchema);
+// instance method schema
+userSchema.method('fullName', function fullName() {
+    return this.name.firstName + '' + this.name.lastName;
+})
+
+// static 
+userSchema.static('getAdminUsers', async function getAdminUsers() {
+    return await this.find({ role: 'admin' });
+});
+
+const User = model<IUser, UserModel>('Users', userSchema);
 export default User;

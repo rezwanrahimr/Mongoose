@@ -16,3 +16,8 @@ export const getUserByIdFormDB = async (payload: string | number) => {
   const user = await User.findOne({ id: payload });
   return user;
 };
+
+export const getAdminUserFromDB = async () => {
+  const adminUsers = await User.getAdminUsers();
+  return adminUsers;
+}
